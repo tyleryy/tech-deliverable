@@ -62,7 +62,12 @@ def get_quote(name: Union[str, None] = None,
     """
 
     if max_age_timestamp:
-        max_age = datetime.fromisoformat(max_age_timestamp)
+        try:
+            max_age = datetime.fromisoformat(max_age_timestamp)
+        except ValueError:
+            LOGGER.error("Timestamp string was not ISO format")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="Timestamp query param was not ISO format")
         # check if max age timestamp is after current time
         if max_age > datetime.now():
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
@@ -79,15 +84,10 @@ def get_quote(name: Union[str, None] = None,
                 return False
             if max_age_timestamp:
                 if datetime.fromisoformat(quote["time"]) < max_age:
-
                     return False
         except KeyError as exc:  # skip if bad data
             LOGGER.warning(f"Quote post is missing '{exc}' field")
             return False
-        except ValueError:
-            LOGGER.error("Timestamp string was not ISO format")
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                                detail="Timestamp query param was not ISO format")
         return True
 
     matched_quotes = []
