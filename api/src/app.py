@@ -1,14 +1,18 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, Union
+from logging import getLogger
 
-from fastapi import FastAPI, Form, status
+from fastapi import FastAPI, Form, status, HTTPException
 from fastapi.responses import RedirectResponse
 
 from services.database import JSONDatabase
 
 app = FastAPI()
 
-database: JSONDatabase[list[dict[str, Any]]] = JSONDatabase("data/database.json")
+database: JSONDatabase[list[dict[str, Any]]
+                       ] = JSONDatabase("data/database.json")
+
+LOGGER = getLogger(__name__)
 
 
 @app.on_event("startup")
@@ -40,4 +44,56 @@ def post_message(name: str = Form(), message: str = Form()) -> RedirectResponse:
     return RedirectResponse("/", status.HTTP_303_SEE_OTHER)
 
 
-# TODO: add another API route with a query parameter to retrieve quotes based on max age
+@app.get("/get-quote", status_code=status.HTTP_200_OK)
+def get_quote(name: Union[str, None] = None,
+              message: Union[str, None] = None,
+              max_age_timestamp: Union[str, None] = None) -> list[dict]:
+    """
+    Search for quotes that match the specified
+    fields, passed in by query params.
+
+    If a query param is not given (it's value is None),
+    it is not considered in the search.
+
+    max_age_timestamp must be a ISO formatted timestamp string.
+    If it is greater than the current time, error is thrown.
+
+    if no matching quotes, [] is returned
+    """
+
+    if max_age_timestamp:
+        max_age = datetime.fromisoformat(max_age_timestamp)
+        # check if max age timestamp is after current time
+        if max_age > datetime.now():
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="max age of quotes is after current time")
+
+    def quote_equality(quote: dict[str, str]) -> bool:
+        """
+        Check if quote has matching fields.
+        """
+        try:
+            if name and quote["name"] != name:
+                return False
+            if message and quote["message"] != message:
+                return False
+            if max_age_timestamp:
+                if datetime.fromisoformat(quote["time"]) < max_age:
+
+                    return False
+        except KeyError as exc:  # skip if bad data
+            LOGGER.warning(f"Quote post is missing '{exc}' field")
+            return False
+        except ValueError:
+            LOGGER.error("Timestamp string was not ISO format")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="Timestamp query param was not ISO format")
+        return True
+
+    matched_quotes = []
+
+    for quote_post in database["posts"]:
+        if quote_equality(quote_post):
+            matched_quotes.append(quote_post)
+
+    return matched_quotes
