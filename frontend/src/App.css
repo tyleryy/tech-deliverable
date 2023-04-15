@@ -1,0 +1,49 @@
+
+.center-topbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-style: dotted;
+    border-color: black;
+}
+
+.topbar {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.topbar-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.deliverable-header {
+    font-style: italic;
+    font-family: Ubuntu;
+    margin-bottom: 0;
+}
+
+.submit-quote-text {
+    position: relative;
+    bottom: -15px;
+    font-family: Ubuntu;
+    margin-top: 0;
+}
+
+.quote-image {
+    height: 80px;
+    width: 80px;
+    margin-left: 15px;
+}
+
+
+.submit-quote-section {
+    margin-top: 20px;
+}
+
+.submit-elems {
+    display: flex;
+    justify-content: space-between;
+}

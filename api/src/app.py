@@ -41,7 +41,7 @@ def post_message(name: str = Form(), message: str = Form()) -> RedirectResponse:
     }
     database["posts"].append(post)
 
-    return RedirectResponse("/", status.HTTP_303_SEE_OTHER)
+    return status.HTTP_303_SEE_OTHER
 
 
 @app.get("/get-quote", status_code=status.HTTP_200_OK)
