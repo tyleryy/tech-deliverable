@@ -1,3 +1,7 @@
+.topbar {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
 
 .center-topbar {
     display: flex;
@@ -5,12 +9,9 @@
     justify-content: center;
     border-style: dotted;
     border-color: black;
+    min-width: 1000px;
 }
 
-.topbar {
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
 
 .topbar-text {
     display: flex;
@@ -46,4 +47,18 @@
 .submit-elems {
     display: flex;
     justify-content: space-between;
+}
+
+.quoteListing {
+    display: flex;
+    flex-direction: column;
+    width: minmax(600px, 80%);
+}
+
+.prevQuoteText {
+    display: inline-block;
+}
+
+.quoteDate {
+    
 }

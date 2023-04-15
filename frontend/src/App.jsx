@@ -1,22 +1,40 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import axios from 'axios'
+import QuoteBox from "./components/QuoteBox";
 
-// TODO put a cond. err message
+
 function App() {
 
 	const [name, changeName] = useState("");
 	const [quote, changeQuote] = useState("");
+	const [quoteListing, changeQuoteListing] = useState([]);
+
+	useEffect (
+		 () => {
+			try {
+				const retrieveQuotes = async () => {
+					const response = await axios.get("api/get-quote");
+					changeQuoteListing(response.data);
+				};
+				retrieveQuotes();
+			} catch (error){
+				alert(`${error.name} occurred: ${error.message}`);
+			}
+
+		},
+		[]
+	)
 
 	const handleSubmit = async (e) => {
 		try {
 			e.preventDefault();
 			const form = new FormData;
-			form.append("name", name)
-			form.append("message", quote)
-			await axios.post('api/quote', form)
+			form.append("name", name);
+			form.append("message", quote);
+			await axios.post('api/quote', form);
 		} catch (error){
-			alert(`${error.name} occurred: ${error.message}`)
+			alert(`${error.name} occurred: ${error.message}`);
 		}
 		// makeFormDataAPIcall("/api/quote", "POST", {"name": name, "quote": quote})
 	}
@@ -51,16 +69,25 @@ function App() {
 					</div>
 					
 				</div>
-			</div>
 
+
+			</div>
 
 			<h2>Previous Quotes</h2>
 			{/* TODO: Display the actual quotes from the database */}
-			<div className="messages">
-				<p>Peter Anteater</p>
-				<p>Zot Zot Zot!</p>
-				<p>Every day</p>
+
+			<div className="quoteListing">
+				{
+					quoteListing && quoteListing.map( (quoteEntry, index) => {
+						return <QuoteBox
+										 key={index}
+										 author={quoteEntry.name}
+										 quote={quoteEntry.message}
+										 date={quoteEntry.time}/>
+					} )
+				}
 			</div>
+
 		</div>
 	);
 }
