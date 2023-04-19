@@ -8,17 +8,22 @@ function App() {
 
 	const [name, changeName] = useState("");
 	const [quote, changeQuote] = useState("");
-	const [quoteListing, changeQuoteListing] = useState([]);
+	const [first_col, changeFirstCol] = useState([]);
+	const [second_col, changeSecondCol] = useState([]);
+	const [third_col, changeThirdCol] = useState([]);
 
 	useEffect (
 		 () => {
 			try {
 				const retrieveQuotes = async () => {
 					const response = await axios.get("api/get-quote");
-					changeQuoteListing(response.data);
+					const quote_list = response.data
+					changeFirstCol(quote_list.slice(0, quote_list.length/3))
+					changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
+					changeThirdCol(quote_list.slice(2*quote_list.length/3))
 				};
 				retrieveQuotes();
-			} catch (error){
+			} catch (error) {
 				alert(`${error.name} occurred: ${error.message}`);
 			}
 
@@ -33,10 +38,11 @@ function App() {
 			form.append("name", name);
 			form.append("message", quote);
 			await axios.post('api/quote', form);
+			changeName("")
+			changeQuote("")
 		} catch (error){
 			alert(`${error.name} occurred: ${error.message}`);
 		}
-		// makeFormDataAPIcall("/api/quote", "POST", {"name": name, "quote": quote})
 	}
 
 	return (
@@ -61,9 +67,9 @@ function App() {
 					<div className="submit-quote-section">
 						<form id="quote-form" className="submit-elems">
 							<label htmlFor="input-name">Name</label>
-							<input type="text" name="name" id="input-name" onChange={(e) => changeName(e.target.value)} required />
+							<input type="text" name="name" id="input-name" value={name} onChange={(e) => changeName(e.target.value)} required />
 							<label htmlFor="input-message">Quote</label>
-							<input type="text" name="message" id="input-message" onChange={(e) => changeQuote(e.target.value)} required />
+							<input type="text" name="message" id="input-message" value={quote} onChange={(e) => changeQuote(e.target.value)} required />
 							<button type="submit" onClick={handleSubmit}>Submit</button>
 						</form>
 					</div>
@@ -73,19 +79,43 @@ function App() {
 
 			</div>
 
-			<h2>Previous Quotes</h2>
+			<h2 className="prevQuoteText">Previous Quotes</h2>
 			{/* TODO: Display the actual quotes from the database */}
 
 			<div className="quoteListing">
-				{
-					quoteListing && quoteListing.map( (quoteEntry, index) => {
-						return <QuoteBox
-										 key={index}
-										 author={quoteEntry.name}
-										 quote={quoteEntry.message}
-										 date={quoteEntry.time}/>
-					} )
-				}
+				<div className="columns">
+					{
+						first_col && first_col.map( (quoteEntry, index) => {
+							return <QuoteBox
+											key={index}
+											author={quoteEntry.name}
+											quote={quoteEntry.message}
+											date={quoteEntry.time}/>
+						} )
+					}
+				</div>
+				<div className="columns">
+					{
+						second_col && second_col.map( (quoteEntry, index) => {
+								return <QuoteBox
+												key={index}
+												author={quoteEntry.name}
+												quote={quoteEntry.message}
+												date={quoteEntry.time}/>
+						} )
+					}
+				</div>
+				<div className="columns">
+					{
+						third_col && third_col.map( (quoteEntry, index) => {
+								return <QuoteBox
+												key={index}
+												author={quoteEntry.name}
+												quote={quoteEntry.message}
+												date={quoteEntry.time}/>
+						} )
+					}
+				</div>
 			</div>
 
 		</div>
