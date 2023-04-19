@@ -5,3 +5,16 @@
     background-color: rgb(0, 255, 221);
     margin-bottom: 10px;
 }
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(100%);
+    filter: blur(10px);
+    transition: all 1.2s ease-in-out; 
+}
+
+.is-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
