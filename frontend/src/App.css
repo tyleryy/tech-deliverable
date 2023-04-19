@@ -63,6 +63,11 @@ body {
 .columns {
     display: flex;
     flex-direction: column;
+
+}
+
+.columns p {
+    word-break: break-word;
 }
 
 .prevQuoteText {
