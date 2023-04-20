@@ -65,7 +65,7 @@ function App() {
 							</div>
 							<img 
 								className="quote-image"
-								src="https://file.notion.so/f/s/c9f6ea9f-45de-4088-a0c9-2563f8e4b4b4/quotebook.png?id=523e9bd3-b49e-4db4-af12-132698ae81dd&table=block&spaceId=4e23f586-3e2e-403c-b0fd-e532279b0d08&expirationTimestamp=1681623817510&signature=kS5ssaNgmRI3fVcdbOIYevkBag2IdvqfqkERcxMNeVE&downloadName=quotebook.png"
+								src="https://hack.ics.uci.edu/static/media/hack-at-uci-logo.d33c5cee07c84da6f485d6a7e4ce1b4a.svg"
 							/>
 
 						</div>
