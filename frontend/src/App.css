@@ -64,7 +64,7 @@ body {
 .quoteListing {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 10px;
+    column-gap: 30px;
     width: minmax(600px, 80%);
 }
 
@@ -81,4 +81,8 @@ body {
 .prevQuoteText {
     margin-top: 250px;
     display: inline-block;
+}
+
+.date-picker {
+    margin-bottom: 30px;
 }

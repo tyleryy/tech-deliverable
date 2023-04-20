@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import axios from 'axios'
+import DatePicker from "react-datepicker"
 import QuoteBox from "./components/QuoteBox";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 
 function App() {
@@ -11,6 +14,9 @@ function App() {
 	const [first_col, changeFirstCol] = useState([]);
 	const [second_col, changeSecondCol] = useState([]);
 	const [third_col, changeThirdCol] = useState([]);
+	const [startDate, setStartDate] = useState(new Date());
+
+
 
 	useEffect (
 		 () => {
@@ -47,7 +53,6 @@ function App() {
 
 	return (
 		<div className="App">
-			
 			<div className="center-menu">
 				<div className="center-topbar">
 
@@ -77,12 +82,17 @@ function App() {
 						
 					</div>
 
-
+					
 				</div>
 			</div>
-
 			<h2 className="prevQuoteText">Previous Quotes</h2>
-			{/* TODO: Display the actual quotes from the database */}
+			<DatePicker 
+				className="date-picker"
+				closeOnScroll={true}
+				showIcon
+				selected={startDate} 
+				onChange={(date) => setStartDate(date)} 
+			/>
 
 			<div className="quoteListing">
 				<div className="columns">
