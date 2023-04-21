@@ -4,13 +4,16 @@ import { useEffect, useRef, useState } from "react";
 const QuoteBox = ({author, quote, date}) => {
     const [intersectionRatio, changeIntersecting] = useState(0)
     const ref = useRef();
+    const options = {
+        threshold: [0, 0.25, 0.5, 0.75, 1]
+      };
 
     useEffect(  () => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach( (entry) => {
                 changeIntersecting(entry.intersectionRatio)
             })
-        })
+        }, options)
 
         observer.observe(ref.current)
         return () => {
