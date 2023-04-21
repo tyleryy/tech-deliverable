@@ -117,12 +117,14 @@ body {
     transition: all .15s;
 }
 .quote-submit-button:hover {
-    opacity: .8;
+    transform: translateY(-3px);
+    background-color: black;
+    color: white; 
 }
 
 .quote-submit-button:active {
-    background-color: black;
-    color: white; 
+    background-color: white;
+    color: black;
 }
 
 .quoteListing {
