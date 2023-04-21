@@ -70,8 +70,7 @@ def get_quote(name: Union[str, None] = None,
                                 detail="Timestamp query param was not ISO format")
         # check if max age timestamp is after current time
         if max_age > datetime.now():
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                                detail="max age of quotes is after current time")
+            return []
 
     def quote_equality(quote: dict[str, str]) -> bool:
         """
