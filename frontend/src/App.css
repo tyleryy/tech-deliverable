@@ -1,5 +1,15 @@
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    } to {
+        transform: rotate(360deg);
+    }
+}
+
 body {
     background: linear-gradient(to bottom right,rgb(253, 142, 142), #feb0b0, #ffb1b1, #ffc6c6);
+    padding: 0;
+    margin: 0;
 }
 
 .topbar {
@@ -19,8 +29,9 @@ body {
     justify-content: center;
     align-items: center;
     border-style: solid;
-    width: 100vw;
-    height: 500px;
+    border: #feb0b0;
+    min-width: 100vw;
+    height: 700px;
     background-image: url('../hack_memories.gif');
     background-size: cover;
     background-position: center;
@@ -61,6 +72,10 @@ body {
     margin-left: 15px;
     padding: 7.5px;
     background-color: none;
+}
+
+.quote-image:hover {
+    animation: spin 2s linear infinite;
 }
 
 .quote-input {
