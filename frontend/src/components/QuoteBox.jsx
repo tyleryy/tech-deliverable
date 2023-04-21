@@ -23,9 +23,8 @@ const QuoteBox = ({author, quote, date}) => {
 
     return (
         <div ref={ref} className={`QuoteBox fade-in ${intersectionRatio > 0 ? "is-visible" : ""}`}>
-            <p className="author-text">{author}</p>
-            <p className="quote-text">{quote}</p>
-            <p className="date-text">{date}</p>
+            <p className="quote-text">"{quote}"</p>
+            <p className="author-text">- {author}</p>
         </div>
     )
 }

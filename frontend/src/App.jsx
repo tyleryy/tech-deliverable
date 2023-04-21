@@ -14,20 +14,19 @@ function App() {
 	const [first_col, changeFirstCol] = useState([]);
 	const [second_col, changeSecondCol] = useState([]);
 	const [third_col, changeThirdCol] = useState([]);
-	const [startDate, setStartDate] = useState(new Date());
+	const [startDate, setStartDate] = useState("");
 
-
+	const retrieveQuotes = async () => {
+		const response = await axios.get("api/get-quote");
+		const quote_list = response.data
+		changeFirstCol(quote_list.slice(0, quote_list.length/3))
+		changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
+		changeThirdCol(quote_list.slice(2*quote_list.length/3))
+	};
 
 	useEffect (
 		 () => {
 			try {
-				const retrieveQuotes = async () => {
-					const response = await axios.get("api/get-quote");
-					const quote_list = response.data
-					changeFirstCol(quote_list.slice(0, quote_list.length/3))
-					changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
-					changeThirdCol(quote_list.slice(2*quote_list.length/3))
-				};
 				retrieveQuotes();
 			} catch (error) {
 				alert(`${error.name} occurred: ${error.message}`);
@@ -46,6 +45,20 @@ function App() {
 			await axios.post('api/quote', form);
 			changeName("")
 			changeQuote("")
+			let quote_list;
+			if (startDate) {
+				const dateObj = new Date(startDate)
+				dateObj.setHours(0, 0, 0, 0);
+				const date_str = dateObj.toISOString().split('T')[0] + "T00:00:00.000"
+				quote_list = await axios.get(`api/get-quote?max_age_timestamp=${date_str}`)
+			} else {
+				quote_list = await axios.get(`api/get-quote`)
+			}
+			quote_list = quote_list.data
+			changeFirstCol(quote_list.slice(0, quote_list.length/3))
+			changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
+			changeThirdCol(quote_list.slice(2*quote_list.length/3))
+
 		} catch (error){
 			alert(`${error.name} occurred: ${error.message}`);
 		}
@@ -57,7 +70,6 @@ function App() {
 		const date_str = dateObj.toISOString().split('T')[0] + "T00:00:00.000"
 		let quote_list = await axios.get(`api/get-quote?max_age_timestamp=${date_str}`)
 		quote_list = quote_list.data
-		console.log(quote_list)
 		changeFirstCol(quote_list.slice(0, quote_list.length/3))
 		changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
 		changeThirdCol(quote_list.slice(2*quote_list.length/3))
@@ -78,16 +90,17 @@ function App() {
 								className="quote-image"
 								src="https://hack.ics.uci.edu/static/media/hack-at-uci-logo.d33c5cee07c84da6f485d6a7e4ce1b4a.svg"
 							/>
-
 						</div>
 						
 						<div className="submit-quote-section">
 							<form id="quote-form" className="submit-elems">
-								<label htmlFor="input-name">Name</label>
-								<input type="text" name="name" id="input-name" value={name} onChange={(e) => changeName(e.target.value)} required />
-								<label htmlFor="input-message">Quote</label>
-								<input type="text" name="message" id="input-message" value={quote} onChange={(e) => changeQuote(e.target.value)} required />
-								<button type="submit" onClick={handleSubmit}>Submit</button>
+								<label htmlFor="input-name">Name:</label>
+								<input className="quote-input" type="text" name="name" id="input-name" 
+									value={name} onChange={(e) => changeName(e.target.value)} required />
+								<label htmlFor="input-message">Quote:</label>
+								<input className="quote-input" type="text" name="message" id="input-message" 
+									value={quote} onChange={(e) => changeQuote(e.target.value)} required />
+								<button className="quote-submit-button" type="submit" onClick={handleSubmit}>Submit</button>
 							</form>
 						</div>
 						
@@ -96,25 +109,30 @@ function App() {
 					
 				</div>
 			</div>
-			<h2 className="prevQuoteText">Previous Quotes</h2>
-			<DatePicker 
-				showIcon
-				className="date-picker"
-				closeOnScroll={true}
-				selected={startDate} 
-				onSelect={handleSelect}
-				onChange={(date) => setStartDate(date)} 
-			/>
+			<div className="calendarFilter">
+				<h2 className="prevQuoteText">Previous Quotes</h2>
+				<div className="date-picker">
+
+					<DatePicker 
+						showIcon
+						closeOnScroll={true}
+						selected={startDate} 
+						onSelect={handleSelect}
+						onChange={(date) => setStartDate(date)} 
+					/>
+				</div>
+			</div>
 
 			<div className="quoteListing">
+
 				<div className="columns">
 					{
-						first_col && first_col.map( (quoteEntry, index) => {
-							return <QuoteBox
-											key={index}
-											author={quoteEntry.name}
-											quote={quoteEntry.message}
-											date={quoteEntry.time}/>
+						third_col && third_col.map( (quoteEntry, index) => {
+								return <QuoteBox
+												key={index}
+												author={quoteEntry.name}
+												quote={quoteEntry.message}
+												date={quoteEntry.time}/>
 						} )
 					}
 				</div>
@@ -131,12 +149,12 @@ function App() {
 				</div>
 				<div className="columns">
 					{
-						third_col && third_col.map( (quoteEntry, index) => {
-								return <QuoteBox
-												key={index}
-												author={quoteEntry.name}
-												quote={quoteEntry.message}
-												date={quoteEntry.time}/>
+						first_col && first_col.map( (quoteEntry, index) => {
+							return <QuoteBox
+											key={index}
+											author={quoteEntry.name}
+											quote={quoteEntry.message}
+											date={quoteEntry.time}/>
 						} )
 					}
 				</div>

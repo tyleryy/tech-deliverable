@@ -1,5 +1,6 @@
 body {
     padding-bottom: 1000px;
+    background: linear-gradient(to bottom right,rgb(253, 142, 142), #feb0b0, #ffb1b1, #ffc6c6);
 }
 
 .topbar {
@@ -14,14 +15,19 @@ body {
 
 .center-topbar {
     position: fixed;
-    background-color: azure;
+    background: linear-gradient(to top left,#4e4e4e, #606060, #7d7d7d, #5a5a5a);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    border-style: dotted;
-    border-color: black;
+    border-style: solid;
     width: 95vw;
     z-index: 1;
+}
+
+.center-topbar h1,
+.center-topbar h2,
+.center-topbar label {
+    color: white;
 }
 
 
@@ -42,7 +48,9 @@ body {
     position: relative;
     bottom: -15px;
     font-family: Ubuntu;
-    margin-top: 0;
+    margin-top: 10px;
+    margin-bottom: 7px;
+    font-family:'Trebuchet MS';
 }
 
 .quote-image {
@@ -53,14 +61,35 @@ body {
     background-color: black;
 }
 
+.quote-input {
+    border-width: 5px;
+    border-radius: 2px;
+}
+
 
 .submit-quote-section {
     margin-top: 20px;
+}
+.submit-quote-section label {
+    font-family:'Trebuchet MS';
+    font: bold;
 }
 
 .submit-elems {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.quote-submit-button {
+    position: relative;
+    border-color: rgb(46, 46, 46);
+    border-style: solid;
+    border-radius: 5px;
+    padding: 8px;
+    width: 100px;
+    height: 45px;
+    left: 20px
 }
 
 .quoteListing {
@@ -81,10 +110,23 @@ body {
 }
 
 .prevQuoteText {
-    margin-top: 250px;
-    display: inline-block;
+    display: block;
+    position: relative;
+    left: 30px;
+    font-family: OCR A Std, monospace;
 }
 
 .date-picker {
-    margin-bottom: 30px;
+    display: block;
+    position: relative;
+    left: 30px;
+}
+
+.calendarFilter {
+    margin-top: 250px;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+    border: solid;
+    border-radius: 2px;
+    background-color: #A6D0DD;
 }
