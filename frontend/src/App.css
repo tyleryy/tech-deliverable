@@ -22,6 +22,9 @@ body {
     border-style: solid;
     width: 95vw;
     z-index: 1;
+    background-image: url('../hack_memories.gif');
+    background-size: cover;
+    background-position: center;
 }
 
 .center-topbar h1,
@@ -127,6 +130,8 @@ body {
     padding-bottom: 20px;
     margin-bottom: 10px;
     border: solid;
+    border-color: black;
     border-radius: 2px;
     background-color: #A6D0DD;
+    max-width: 300px;
 }
