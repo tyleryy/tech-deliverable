@@ -9,3 +9,6 @@ Conda Environment Steps:
 1. conda create --name {env_name} python={some_version}
 2. conda activate {env_name}
 3. conda install -c conda-forge --file api/requirements.txt
+4. conda activate {env_name}
+
+Then, run  `python3 src/main.py`  to activate the api.
