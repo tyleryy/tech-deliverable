@@ -100,7 +100,8 @@ function App() {
 								<label htmlFor="input-message">Quote:</label>
 								<input className="quote-input" type="text" name="message" id="input-message" 
 									value={quote} onChange={(e) => changeQuote(e.target.value)} required />
-								<button className="quote-submit-button" type="submit" onClick={handleSubmit}>Submit</button>
+								<button title="Fill out the fields and press to submit your quote!" 
+								className="quote-submit-button" type="submit" onClick={handleSubmit}>Submit</button>
 							</form>
 						</div>
 						
@@ -111,7 +112,8 @@ function App() {
 			</div>
 			<div className="calendarFilter">
 				<h2 className="prevQuoteText">Previous Quotes</h2>
-				<div className="date-picker">
+				<div title="Select from dropdown calendar to display quotes that were submitted in between the selected date to today's date."
+				className="date-picker">
 
 					<DatePicker 
 						showIcon
@@ -157,6 +159,14 @@ function App() {
 											date={quoteEntry.time}/>
 						} )
 					}
+				</div>
+				<div>
+					{
+						<img className={first_col.length + second_col.length + third_col.length === 0 ? "" : "hidden"} 
+						alt="petr-easter-egg" src="../petr.jpeg">
+						</img>
+					}
+
 				</div>
 			</div>
 		</div>
