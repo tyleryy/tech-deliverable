@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import axios from 'axios'
-import DatePicker from "react-datepicker"
+import axios from 'axios';
+import DatePicker from "react-datepicker";
 import QuoteBox from "./components/QuoteBox";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,12 +16,16 @@ function App() {
 	const [third_col, changeThirdCol] = useState([]);
 	const [startDate, setStartDate] = useState("");
 
+	const updateQuotes = (quote_list) => {
+		changeFirstCol(quote_list.slice(0, quote_list.length/3));
+		changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)));
+		changeThirdCol(quote_list.slice(2*quote_list.length/3));
+	}
+
 	const retrieveQuotes = async () => {
-		const response = await axios.get("api/get-quote");
-		const quote_list = response.data
-		changeFirstCol(quote_list.slice(0, quote_list.length/3))
-		changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
-		changeThirdCol(quote_list.slice(2*quote_list.length/3))
+		let response = await axios.get("api/get-quote");
+		response = response.data
+		updateQuotes(response);
 	};
 
 	useEffect (
@@ -43,24 +47,20 @@ function App() {
 			form.append("name", name);
 			form.append("message", quote);
 			await axios.post('api/quote', form);
-			changeName("")
-			changeQuote("")
+			changeName("");
+			changeQuote("");
 			let quote_list;
 			if (startDate) {
-				const dateObj = new Date(startDate)
+				const dateObj = new Date(startDate);
 				dateObj.setHours(0, 0, 0, 0);
-				const date_str = dateObj.toISOString().split('T')[0] + "T00:00:00.000"
-				quote_list = await axios.get(`api/get-quote?max_age_timestamp=${date_str}`)
+				const date_str = dateObj.toISOString().split('T')[0] + "T00:00:00.000";
+				quote_list = await axios.get(`api/get-quote?max_age_timestamp=${date_str}`);
 			} else {
-				quote_list = await axios.get(`api/get-quote`)
+				quote_list = await axios.get(`api/get-quote`);
 			}
 			quote_list = quote_list.data
-			changeFirstCol(quote_list.slice(0, quote_list.length/3))
-			changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
-			changeThirdCol(quote_list.slice(2*quote_list.length/3))
-
+			updateQuotes(quote_list)
 			alert("Quote successfully submitted!")
-
 		} catch (error){
 			alert("Error submiting form");
 		}
@@ -69,12 +69,10 @@ function App() {
 	const handleSelect = async (e) => {
 		const dateObj = new Date(e)
 		dateObj.setHours(0, 0, 0, 0);
-		const date_str = dateObj.toISOString().split('T')[0] + "T00:00:00.000"
-		let quote_list = await axios.get(`api/get-quote?max_age_timestamp=${date_str}`)
+		const date_str = dateObj.toISOString().split('T')[0] + "T00:00:00.000";
+		let quote_list = await axios.get(`api/get-quote?max_age_timestamp=${date_str}`);
 		quote_list = quote_list.data
-		changeFirstCol(quote_list.slice(0, quote_list.length/3))
-		changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
-		changeThirdCol(quote_list.slice(2*quote_list.length/3))
+		updateQuotes(quote_list)
 	}
 
 	return (
@@ -169,7 +167,7 @@ function App() {
 				<div>
 					{
 						<img className={first_col.length + second_col.length + third_col.length === 0 ? "" : "hidden"} 
-						alt="petr-easter-egg" src="../petr.jpeg">
+							alt="petr-easter-egg" src="../petr.jpeg">
 						</img>
 					}
 
