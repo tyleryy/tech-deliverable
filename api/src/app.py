@@ -80,7 +80,7 @@ def get_quote(name: Union[str, None] = None,
         try:
             if name and quote["name"] != name:
                 return False
-            if message and quote["message"] != message:
+            if message and not (quote["message"].includes(message)):
                 return False
             if max_age_timestamp:
                 if datetime.fromisoformat(quote["time"]) < max_age:
