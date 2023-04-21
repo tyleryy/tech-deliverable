@@ -51,6 +51,18 @@ function App() {
 		}
 	}
 
+	const handleSelect = async (e) => {
+		const dateObj = new Date(e)
+		dateObj.setHours(0, 0, 0, 0);
+		const date_str = dateObj.toISOString().split('T')[0] + "T00:00:00.000"
+		let quote_list = await axios.get(`api/get-quote?max_age_timestamp=${date_str}`)
+		quote_list = quote_list.data
+		console.log(quote_list)
+		changeFirstCol(quote_list.slice(0, quote_list.length/3))
+		changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
+		changeThirdCol(quote_list.slice(2*quote_list.length/3))
+	}
+
 	return (
 		<div className="App">
 			<div className="center-menu">
@@ -58,7 +70,6 @@ function App() {
 
 					<div className="topbar">
 						<div className="topbar-text">
-
 							<div className="title">
 								<h1 className="deliverable-header">Hack @ UCI Tech Deliverable</h1>
 								<h2 className="submit-quote-text">Submit a quote</h2>
@@ -87,10 +98,11 @@ function App() {
 			</div>
 			<h2 className="prevQuoteText">Previous Quotes</h2>
 			<DatePicker 
+				showIcon
 				className="date-picker"
 				closeOnScroll={true}
-				showIcon
 				selected={startDate} 
+				onSelect={handleSelect}
 				onChange={(date) => setStartDate(date)} 
 			/>
 

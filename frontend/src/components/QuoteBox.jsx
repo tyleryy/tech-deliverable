@@ -14,7 +14,9 @@ const QuoteBox = ({author, quote, date}) => {
 
         observer.observe(ref.current)
         return () => {
-            observer.unobserve(ref.current)
+            if (ref.current) {
+                observer.unobserve(ref.current)
+            }
         }
     }, []);
 
