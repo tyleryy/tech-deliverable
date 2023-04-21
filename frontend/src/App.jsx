@@ -59,6 +59,8 @@ function App() {
 			changeSecondCol(quote_list.slice(quote_list.length/3, 2*(quote_list.length/3)))
 			changeThirdCol(quote_list.slice(2*quote_list.length/3))
 
+			alert("Quote successfully submitted!")
+
 		} catch (error){
 			alert("Error submiting form");
 		}
