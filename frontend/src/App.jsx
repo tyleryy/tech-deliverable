@@ -29,7 +29,7 @@ function App() {
 			try {
 				retrieveQuotes();
 			} catch (error) {
-				alert(`${error.name} occurred: ${error.message}`);
+				alert("Unable to retrieve quotes");
 			}
 
 		},
@@ -60,7 +60,7 @@ function App() {
 			changeThirdCol(quote_list.slice(2*quote_list.length/3))
 
 		} catch (error){
-			alert(`${error.name} occurred: ${error.message}`);
+			alert("Error submiting form");
 		}
 	}
 
@@ -77,6 +77,8 @@ function App() {
 
 	return (
 		<div className="App">
+
+
 			<div className="center-menu">
 				<div className="center-topbar">
 
