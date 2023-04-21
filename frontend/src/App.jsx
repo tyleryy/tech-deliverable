@@ -77,6 +77,10 @@ function App() {
 
 	return (
 		<div className="App">
+			<div className="wave"></div>
+			<div className="wave"></div>
+			<div className="wave"></div>
+
 			<div className="center-menu">
 				<div className="center-topbar">
 
